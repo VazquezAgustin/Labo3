@@ -32,7 +32,7 @@ void voLeerArchivo(FILE *archivo){
 }
 
 void voEscribirArchivo(FILE *archivo, const char contenido[]){
-    fprintf(archivo, "%s \n", contenido);
+    fprintf(archivo, "%s", contenido);
 }
 
 void voCerrarArchivo(FILE *archivo){

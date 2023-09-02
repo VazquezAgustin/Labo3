@@ -12,7 +12,7 @@ int main()
         // Escribir el archivo
         for (i = 1; i < 11; ++i)
         {
-            snprintf(contenido_archivo, 12, "AUTO-%d", i);
+            snprintf(contenido_archivo, 12, "AUTO-%d \n", i);
             voEscribirArchivo(archivo, contenido_archivo);
         }
         voCerrarArchivo(archivo);
