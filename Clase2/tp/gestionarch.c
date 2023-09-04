@@ -1,22 +1,23 @@
-#include "stdio.h"
 #include "stdlib.h"
+#include "stdio.h"
 #include "string.h"
-#include "gestionarchivos.h"
+#include <unistd.h>
+#include <gestionarch.h>
 
 char read_buffer[20 + 1];
 
-int inAbrirArchivo(FILE **archivo, const char *modo){
+FILE * AbrirArchivo(FILE *archivo, char modo[]){
     
     // Abrir el archivo en modo escritura
-    *archivo = fopen("productos.txt", modo);
+    archivo = fopen("productos.txt", modo);
 
     // Verificar si el archivo se abrió correctamente
-    if (*archivo == NULL) {
+    if (archivo == NULL) {
         printf("No se pudo abrir el archivo.\n");
-        return 1;  // Terminar el programa con código de error
+        return NULL;  // Terminar el programa con código de error
+    }else{
+        return archivo;
     }
-
-    return 0;
 }
 
 void voLeerArchivo(FILE *archivo){
