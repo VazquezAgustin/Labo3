@@ -1,7 +1,8 @@
-#include "stdio.h"
 #include "stdlib.h"
+#include "stdio.h"
 #include "string.h"
-#include "gestionarchivos.h"
+#include <unistd.h>
+#include <gestionarch.h>
 
 char read_buffer[20 + 1];
 

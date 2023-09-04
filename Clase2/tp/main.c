@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include "gestionarch.h"
 
 int main(int arg, char *argv[])
 {
