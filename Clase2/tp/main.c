@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main()
+int main(int arg, char *argv[])
 {
     int i;
     char contenido_archivo[20 + 1]; // +1 para el carácter nulo
-    FILE *archivo;
+    FILE *archivo = NULL;
 
     // Abrir el archivo en modo escritura
-    if(inAbrirArchivo(&archivo, "w") == 0){
+    archivo = AbrirArchivo(archivo, "w");
+
+    if(archivo != NULL){
         // Escribir el archivo
         for (i = 1; i < 11; ++i)
         {
@@ -16,12 +18,17 @@ int main()
             voEscribirArchivo(archivo, contenido_archivo);
         }
         voCerrarArchivo(archivo);
+    }else{
+        printf("Error al abrir el archivo para escritura");
     };
 
     // Leer archivo
-    if(inAbrirArchivo(&archivo, "r") == 0){
+    archivo = AbrirArchivo(archivo, "r");
+    if(archivo != NULL){
         voLeerArchivo(archivo);
         // Cerrar archivo
         voCerrarArchivo(archivo);
+    }else{
+        printf("Error al abrir el archivo para lectura");
     }
 }
