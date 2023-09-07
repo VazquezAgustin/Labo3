@@ -7,6 +7,6 @@ HEADERS = -I./
 all = clean prog
 
 prog:
-	$(CC) -o miprog.o main.c funciones.c global.c $(CFLAGS) $(HEADERS)
+	$(CC) -o miprog main.c clave.c $(CFLAGS) $(HEADERS)
 
 clean: rm -rf *o miprog
