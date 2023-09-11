@@ -24,8 +24,10 @@ int main(int arg, char *argv[])
             
             snprintf(contenido_archivo, 12, "AUTO-%d \n", i);
             voEscribirArchivo(archivo, contenido_archivo);
-
+            
+            fflush(archivo);
             levanta_semaforo(id_semaforo);
+            usleep(1000000);
         }
     }else{
         printf("Error al abrir el archivo para escritura");

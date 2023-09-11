@@ -20,6 +20,7 @@ int main(int arg, char *argv[])
             espera_semaforo(id_semaforo);
             voLeerArchivo(archivo);
             levanta_semaforo(id_semaforo);
+            usleep(1000000);
         }
     }
 
