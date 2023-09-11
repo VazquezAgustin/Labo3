@@ -19,11 +19,14 @@ int creo_semaforo()
         exit(0);
     }
     return id_semaforo;
-} /*inicia el semaforo*/
+} 
+
+/*inicia el semaforo*/
 void inicia_semaforo(int id_semaforo, int valor)
 {
     semctl(id_semaforo, 0, SETVAL, valor);
 }
+
 /*levanta el semaforo*/
 void levanta_semaforo(int id_semaforo)
 {
@@ -35,6 +38,7 @@ void levanta_semaforo(int id_semaforo)
     operacion.sem_flg = 0;
     semop(id_semaforo, &operacion, 1);
 }
+
 /* espera semaforo*/
 void espera_semaforo(int id_semaforo)
 {
@@ -46,4 +50,3 @@ void espera_semaforo(int id_semaforo)
     operacion.sem_flg = 0;
     semop(id_semaforo, &operacion, 1);
 }
-
