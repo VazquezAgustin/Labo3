@@ -14,9 +14,10 @@
         char *linea;
         char *nombre_archivo = (char *)malloc(20 * sizeof(char)); // tamano de la cadena * sizeofchar
         char letra_binario;
+        int contador = 0;
 
         if (arg != 2) {
-            printf("Uso: programa <A|B|C>\n");
+            printf("Uso: enviar <A|B|C> junto a la ejecucion del programa \n");
             return 1;
         }
 
@@ -38,6 +39,7 @@
             voEscribirArchivo(archivo_productor, linea);
             
             voCerrarArchivo(archivo_pedidos);
+            contador = contador + 1;
             levanta_semaforo(id_semaforo);
         }
 

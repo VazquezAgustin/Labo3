@@ -13,9 +13,9 @@ Productores debe
 - Mostrar
     - Total menus realizados (cantidad o menu entero?)
 
-INSTRUCCIONES
+INSTRUCCIONES para ejecutar el programa
 - make
 - ./main1
-- ./productora
-- ./productorb
-- ./productorc
+- ./productor a
+- ./productor b
+- ./productor c
