@@ -37,6 +37,7 @@ void levanta_semaforo(int id_semaforo)
     /* incrementa el semaforo en 1*/
     operacion.sem_flg = 0;
     semop(id_semaforo, &operacion, 1);
+    printf("levanta semaforo \n");
 }
 
 /* espera semaforo*/
@@ -49,4 +50,5 @@ void espera_semaforo(int id_semaforo)
     /* decrementa el semaforo en 1*/
     operacion.sem_flg = 0;
     semop(id_semaforo, &operacion, 1);
+    printf("espera semaforo \n");
 }

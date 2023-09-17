@@ -8,6 +8,12 @@
 
 int main(int arg, char *argv[])
 {
+
+    if (arg != 2) {
+        printf("Uso: debe ingresar <A|B|C> junto a la ejecucion del programa \n");
+        return 1;
+    }
+
     int desde=0, hasta=0;
 
     /* memoria dinamica */

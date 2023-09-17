@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <gestionarch.h>
 
-char read_buffer[50 + 1];
+char read_buffer[25];
 
 FILE * AbrirArchivo(FILE *archivo, char modo[], char nombre[]){
     
@@ -32,19 +32,13 @@ void voLeerArchivo(FILE *archivo){
     }
 }
 
-char leerLineaDeArchivo(FILE *archivo) {
-    size_t longitud = 0;
-    ssize_t caracteresLeidos;
-
-    // Leer la línea desde el archivo
-    caracteresLeidos = getline(&read_buffer, &longitud, archivo);
-
-    if (caracteresLeidos == -1) {
-        perror("Error al leer la línea");
+char *leerPrimeraLinea(FILE *archivo) {
+    if (fgets(read_buffer, sizeof(read_buffer), archivo) == NULL) {
+        perror("Error al leer la primera línea");
         return NULL;
     }
 
-    return caracteresLeidos;
+    return read_buffer;
 }
 
 void voEscribirArchivo(FILE *archivo, const char contenido[]){
