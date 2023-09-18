@@ -13,9 +13,11 @@
         FILE *archivo_pedidos = NULL;
         FILE *archivo_productor = NULL;
         char *linea;
+        char *linea_copia;
         char *nombre_archivo = (char *)malloc(20 * sizeof(char)); // tamano de la cadena * sizeofchar
         char letra_binario;
         int contador = 0;
+        char *token;
 
         if (arg != 2) {
             printf("Uso: enviar <A|B|C> junto a la ejecucion del programa \n");
@@ -34,10 +36,16 @@
 
             //Leo archivo pedidos
             archivo_pedidos = AbrirArchivo(archivo_pedidos, "r", "pedidos.dat");
-            linea = leerPrimeraLinea(archivo_pedidos);
 
-            voEscribirArchivo(archivo_productor, linea);
-            
+            linea = leerPrimeraLinea(archivo_pedidos);
+            linea_copia = strdup(linea); //copio la linea para no perderla al hacer el strtok
+            token = strtok(linea_copia, ",");
+
+            if(token[0] == letra_binario)
+            {
+                voEscribirArchivo(archivo_productor, linea);
+            }
+
             voCerrarArchivo(archivo_pedidos);
             contador = contador + 1;
             levanta_semaforo(id_semaforo);
