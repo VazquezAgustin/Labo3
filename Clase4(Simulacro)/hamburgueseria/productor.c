@@ -5,6 +5,7 @@
     #include <clave.h>
     #include <semaforo.h>
     #include <gestionarch.h>
+    #include <time.h>
 
     int main(int arg, char *argv[])
     {
@@ -34,7 +35,6 @@
             //Leo archivo pedidos
             archivo_pedidos = AbrirArchivo(archivo_pedidos, "r", "pedidos.dat");
             linea = leerPrimeraLinea(archivo_pedidos);
-            printf("LA LINEA ES %s", linea);
 
             voEscribirArchivo(archivo_productor, linea);
             

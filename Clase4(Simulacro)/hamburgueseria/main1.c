@@ -4,6 +4,7 @@
 #include <string.h>
 #include <semaforo.h>
 #include <gestionarch.h>
+#include <time.h>
 
 // Definición de la estructura
 struct Pedido {
@@ -70,7 +71,6 @@ int main(int arg, char *argv[])
 
         archivo = AbrirArchivo(archivo, "w", "pedidos.dat");
         snprintf(contenido_archivo, 20, "%s,%d,%d\n", pedidos[numeroAleatorio].menu, pedidos[numeroAleatorio].postre, pedidos[numeroAleatorio].precio);
-        printf("LINEA ES %s", contenido_archivo);
         voEscribirArchivo(archivo, contenido_archivo);
 
         voCerrarArchivo(archivo);
