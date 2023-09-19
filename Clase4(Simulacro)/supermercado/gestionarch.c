@@ -34,7 +34,6 @@ void voLeerArchivo(FILE *archivo){
 
 char *leerPrimeraLinea(FILE *archivo) {
     if (fgets(read_buffer, sizeof(read_buffer), archivo) == NULL) {
-        perror("Error al leer la primera línea");
         return NULL;
     }
 
