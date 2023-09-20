@@ -21,7 +21,7 @@
         char tipo_alumno;
         char letra_tipo_alumno[2];
         char *linea;
-        
+
         if (arg != 2) {
             printf("Uso: Ingresar 1 o 2 como parametro de entrada (1 para Inicial / 2 para provenientes de otra universidad) \n");
             return 1;
@@ -80,9 +80,6 @@
                     voCerrarArchivo(archivo_origen);
                     voCerrarArchivo(archivo_destino);
                     levanta_semaforo(id_semaforo);
-                } else {
-                    printf("El primer carácter no es 'A'.\n");
-                    // Realiza las acciones correspondientes si el primer carácter no es 'A'
                 }
                 
             }
