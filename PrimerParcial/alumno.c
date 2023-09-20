@@ -15,13 +15,13 @@
         char nombre_archivo_destino[15];
         int id_semaforo;
         char contenido_archivo[20 + 1];
+        char primerCaracter;
 
         //otros
         char tipo_alumno;
         char letra_tipo_alumno[2];
         char *linea;
-        char *token;
-
+        
         if (arg != 2) {
             printf("Uso: Ingresar 1 o 2 como parametro de entrada (1 para Inicial / 2 para provenientes de otra universidad) \n");
             return 1;
@@ -63,20 +63,27 @@
 
             if (linea != NULL)
             {   
-
-                // envio a destino correspondiente
-                espera_semaforo(id_semaforo);
-                archivo_destino = AbrirArchivo(archivo_destino, "a", nombre_archivo_destino);
-                memset(contenido_archivo, 0x00, sizeof(contenido_archivo));
-                snprintf(contenido_archivo, 20, "%s", linea);
-                voEscribirArchivo(archivo_destino, contenido_archivo);
+                primerCaracter = linea[0];
+                printf("el valor del primer caracter es: %c", primerCaracter);
                 
-                // reinicio archivo
-                archivo_origen = AbrirArchivo(archivo_origen, "w", "cargas.dat");
+                if (primerCaracter == letra_tipo_alumno[0]) {
+                    // envio a destino correspondiente
+                    espera_semaforo(id_semaforo);
+                    archivo_destino = AbrirArchivo(archivo_destino, "a", nombre_archivo_destino);
+                    memset(contenido_archivo, 0x00, sizeof(contenido_archivo));
+                    snprintf(contenido_archivo, 20, "%s", linea);
+                    voEscribirArchivo(archivo_destino, contenido_archivo);
+                    
+                    // reinicio archivo
+                    archivo_origen = AbrirArchivo(archivo_origen, "w", "cargas.dat");
 
-                voCerrarArchivo(archivo_origen);
-                voCerrarArchivo(archivo_destino);
-                levanta_semaforo(id_semaforo);
+                    voCerrarArchivo(archivo_origen);
+                    voCerrarArchivo(archivo_destino);
+                    levanta_semaforo(id_semaforo);
+                } else {
+                    printf("El primer carácter no es 'A'.\n");
+                    // Realiza las acciones correspondientes si el primer carácter no es 'A'
+                }
                 
             }
             
