@@ -5,7 +5,7 @@
 #include <gestionarch.h>
 #include <time.h>
 
-char read_buffer[25];
+char read_buffer[200];
 
 FILE * AbrirArchivo(FILE *archivo, char modo[], char nombre[]){
     
@@ -22,9 +22,8 @@ FILE * AbrirArchivo(FILE *archivo, char modo[], char nombre[]){
 }
 
 void voLeerArchivo(FILE *archivo){
-    printf("El contenido del archivo es: ");
+    memset(read_buffer, 0x00, sizeof(read_buffer));
     // Abrir archivo en modo lectura
-    archivo = fopen("productos.txt", "r");
 
     while (!feof(archivo))
     {
