@@ -12,10 +12,12 @@ int main(int arg, char *argv[])
     int id_semaforo = 0;
     char contenido_archivo[20 + 1];
     FILE *archivo = NULL;
+    FILE *archivo_lectura = NULL;
 
     // otras
     int menu_deseado = 0;
     char tipo_alumno[2];
+    char tipo_alumno_lectura[2];
     int cantidad_materias = 0;
     char nombre_alumno[30];
     char apellido_alumno[30];
@@ -69,8 +71,22 @@ int main(int arg, char *argv[])
         {
             // MENU 2
             printf("Tipo de alumno a leer: (I para inicial/M para materias a validar) \n");
-            memset(tipo_alumno, 0x00, sizeof(tipo_alumno));
-            scanf("%s", tipo_alumno);
+            memset(tipo_alumno_lectura, 0x00, sizeof(tipo_alumno_lectura));
+            scanf("%s", tipo_alumno_lectura);
+
+            espera_semaforo(id_semaforo);
+            if(strcmp(tipo_alumno_lectura, "M") == 0){
+                archivo_lectura = AbrirArchivo(archivo_lectura, "r", "materiasp.dat");
+            }
+
+            if(strcmp(tipo_alumno_lectura, "I") == 0){
+                archivo_lectura = AbrirArchivo(archivo_lectura, "r", "iniciales.dat");
+            }
+
+            printf("aca 3 ");
+            voLeerArchivo(archivo_lectura);
+            voCerrarArchivo(archivo_lectura);
+            levanta_semaforo(id_semaforo);
         }
     }
 
