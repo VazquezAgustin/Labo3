@@ -33,10 +33,12 @@ void voLeerArchivo(FILE *archivo){
 }
 
 char *leerPrimeraLinea(FILE *archivo) {
+    memset(read_buffer, 0x00, sizeof(read_buffer));
     if (fgets(read_buffer, sizeof(read_buffer), archivo) == NULL) {
         return NULL;
     }
 
+    printf("%s \n", read_buffer);
     return read_buffer;
 }
 
