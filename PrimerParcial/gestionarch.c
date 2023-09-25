@@ -27,8 +27,8 @@ void voLeerArchivo(FILE *archivo){
 
     while (!feof(archivo))
     {
-        fscanf(archivo, "%s ", read_buffer);
-        printf("%s\n", read_buffer);
+        fscanf(archivo, "%s \n", read_buffer);
+        printf("%s \n", read_buffer);
     }
 }
 
@@ -38,7 +38,6 @@ char *leerPrimeraLinea(FILE *archivo) {
         return NULL;
     }
 
-    printf("%s \n", read_buffer);
     return read_buffer;
 }
 

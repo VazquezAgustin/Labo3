@@ -83,7 +83,6 @@ int main(int arg, char *argv[])
                 archivo_lectura = AbrirArchivo(archivo_lectura, "r", "iniciales.dat");
             }
 
-            printf("aca 3 ");
             voLeerArchivo(archivo_lectura);
             voCerrarArchivo(archivo_lectura);
             levanta_semaforo(id_semaforo);

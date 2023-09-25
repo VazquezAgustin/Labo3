@@ -15,7 +15,6 @@
         char nombre_archivo_destino[15];
         int id_semaforo;
         char contenido_archivo[20 + 1];
-        char primerCaracter;
 
         //otros
         char tipo_alumno;
@@ -63,9 +62,9 @@
 
             if (linea != NULL)
             {   
-                primerCaracter = linea[0];
-                
-                if (primerCaracter == letra_tipo_alumno[0]) {
+
+                if (linea[0] == letra_tipo_alumno[0]) {
+                    printf("%s \n", linea);
                     // envio a destino correspondiente
                     espera_semaforo(id_semaforo);
                     archivo_destino = AbrirArchivo(archivo_destino, "a", nombre_archivo_destino);
