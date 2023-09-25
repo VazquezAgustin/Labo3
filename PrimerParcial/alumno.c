@@ -64,13 +64,11 @@
             if (linea != NULL)
             {   
                 primerCaracter = linea[0];
-                printf("el valor del primer caracter es: %c", primerCaracter);
                 
                 if (primerCaracter == letra_tipo_alumno[0]) {
                     // envio a destino correspondiente
                     espera_semaforo(id_semaforo);
                     archivo_destino = AbrirArchivo(archivo_destino, "a", nombre_archivo_destino);
-                    printf("hola aca");
                     memset(contenido_archivo, 0x00, sizeof(contenido_archivo));
                     snprintf(contenido_archivo, 20, "%s", linea);
                     voEscribirArchivo(archivo_destino, contenido_archivo);
