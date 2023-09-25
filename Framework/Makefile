@@ -2,15 +2,17 @@ CC = gcc
 
 CFLAGS = -Wall -std=gnu89 -O3 -pedantic-errors
 
+LIBRARIES = clave.c semaforo.c gestionarch.c
+
 HEADERS = -I./
 
-all: clean main main2
+all: clean main1 productor
 
-main:
-	$(CC) -o main main.c clave.c semaforo.c gestionarch.c $(CFLAGS) $(HEADERS)
+main1:
+	$(CC) -o main1 main1.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
 
-main2:
-	$(CC) -o main2 main2.c clave.c semaforo.c gestionarch.c $(CFLAGS) $(HEADERS)
+productor:
+	$(CC) -o productor productor.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
 
 clean: 
-	rm -rf *o main main2
+	rm -rf *o main1 productor *.dat

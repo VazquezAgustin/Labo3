@@ -4,12 +4,12 @@
 #include <unistd.h>
 #include <gestionarch.h>
 
-char read_buffer[20 + 1];
+char read_buffer[25];
 
-FILE * AbrirArchivo(FILE *archivo, char modo[]){
+FILE * AbrirArchivo(FILE *archivo, char modo[], char nombre[]){
     
     // Abrir el archivo en modo escritura
-    archivo = fopen("productos.txt", modo);
+    archivo = fopen(nombre, modo);
 
     // Verificar si el archivo se abrió correctamente
     if (archivo == NULL) {
@@ -30,6 +30,16 @@ void voLeerArchivo(FILE *archivo){
         fscanf(archivo, "%s ", read_buffer);
         printf("%s\n", read_buffer);
     }
+}
+
+char *leerPrimeraLinea(FILE *archivo) {
+    memset(read_buffer, 0x00, sizeof(read_buffer));
+    if (fgets(read_buffer, sizeof(read_buffer), archivo) == NULL) {
+        return NULL;
+    }
+
+    printf("%s \n", read_buffer);
+    return read_buffer;
 }
 
 void voEscribirArchivo(FILE *archivo, const char contenido[]){
