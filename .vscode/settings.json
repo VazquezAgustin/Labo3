@@ -3,6 +3,8 @@
         "stdlib.h": "c",
         "stdio.h": "c",
         "string.h": "c",
-        "semaforo.h": "c"
+        "semaforo.h": "c",
+        "clave.h": "c",
+        "funcionesthreads.h": "c"
     }
 }

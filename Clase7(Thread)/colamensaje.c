@@ -8,6 +8,9 @@
 #include <time.h>
 #include <gestionarch.h>
 #include "global.h"
+#include <sys/msg.h>
+#include <string.h>
+#include <clave.h>
 
 int creo_id_cola_mensajes(int clave)
 {

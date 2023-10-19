@@ -2,7 +2,7 @@ CC = gcc
 
 CFLAGS = -Wall -std=gnu89 -O3 -pedantic-errors
 
-LIBRARIES = clave.c semaforo.c gestionarch.c
+LIBRARIES = clave.c semaforo.c gestionarch.c colamensaje.c
 
 HEADERS = -I./
 
