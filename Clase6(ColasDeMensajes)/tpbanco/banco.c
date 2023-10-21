@@ -9,6 +9,7 @@
 #include "gestionarch.h"
 #include "global.h"
 #include "colamensaje.h"
+#include <string.h>
 
 void procesar_evento(int id_cola_mensajes, mensaje msg)
 {
@@ -29,7 +30,6 @@ void procesar_evento(int id_cola_mensajes, mensaje msg)
 	{
 		case EVT_CONSULTA_SALDO:
 			printf("Consulta saldo\n");
-
             
 
 			enviar_mensaje(id_cola_mensajes , msg.int_rte, MSG_BANCO, EVT_RTA_SALDO, cadena);
@@ -48,8 +48,32 @@ void procesar_evento(int id_cola_mensajes, mensaje msg)
 
 int main(int arg, char *argv[])
 {   
+	//memoria, semaforos y mensajes
     int id_cola_mensajes;
+	int id_memoria;	
+	int id_semaforo;
+    dato *memoria = NULL;
+	//generales
+	int saldo_aleatorio = 0;
+	int i = 0;
+
     mensaje msg;
+	memoria = (dato*)creo_memoria(sizeof(dato)*CANTIDAD, &id_memoria, CLAVE_BASE);
+
+    printf("Inicializando 100 clientes \n");
+    for (i = 0; i < 101; i++)
+    {
+        memoria[i].codigo_cliente = 0;
+        memoria[i].saldo = 0;
+    }
+
+    printf("Rellenando 100 clientes \n");
+    for (i = 0; i < 101; i++)
+    {
+        saldo_aleatorio = rand()%(100-5000);
+        memoria[i].codigo_cliente = i;
+        memoria[i].saldo = saldo_aleatorio;
+    }
 
     recibir_mensaje(id_cola_mensajes, MSG_BANCO, &msg);
 
