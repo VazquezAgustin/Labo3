@@ -1,7 +1,7 @@
 #include <definiciones.h>
 #include <semaforo.h>
 #include <global.h>
-#include <cola.h>
+#include <colamensaje.h>
 #define INTERVALO_PEDIDOS 2000
 void procesar_evento(int id_cola_mensajes, mensaje msg)
 {

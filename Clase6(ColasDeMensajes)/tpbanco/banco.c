@@ -1,81 +1,94 @@
-#include <sys/shm.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/ipc.h>
-#include "memoria.h"
-#include "semaforo.h"
-#include <time.h>
-#include "gestionarch.h"
-#include "global.h"
-#include "colamensaje.h"
-#include <string.h>
-
-void procesar_evento(int id_cola_mensajes, mensaje msg)
+#include <semaforo.h>
+#include <global.h>
+#include <colamensaje.h>
+#include <definiciones.h>
+#define INTERVALO_PEDIDOS 2000
+void procesar_evento(int id_cola_mensajes, mensaje msg, cliente (*cli)[100])
 {
-    // memoria, semaforos
-    int id_memoria;	
-	dato *memoria = NULL;
-    // otras
-	char cadena[100];
-	static int cantidad=0;  //es inicializada solo una vez, mantiene el valor en las sucesivas llamadas.
-	printf("Destino   %d\n", (int) msg.long_dest);
-	printf("Remitente %d\n", msg.int_rte);
-	printf("Evento    %d\n", msg.int_evento);
-	printf("Mensaje   %s\n", msg.char_mensaje);
+    int saldo;
+    int num_cliente;
 
-    memoria = (dato*)creo_memoria(sizeof(dato)*CANTIDAD, &id_memoria, CLAVE_BASE);
+    num_cliente = msg.nro_cuenta;
 
-	switch (msg.int_evento)
-	{
-		case EVT_CONSULTA_SALDO:
-			printf("Consulta saldo\n");
-            
+    switch (msg.int_evento)
+    {
+    case EVT_CONSULTA_SALDO:
+        printf("Consulta saldo numero de cuenta: %d\n", msg.nro_cuenta);
+        if (num_cliente >= 0 && num_cliente < 100)
+        {
+            saldo = (*cli)[num_cliente].saldo;
+            enviar_mensaje(id_cola_mensajes, msg.int_rte, MSG_BANCO, EVT_RTA_SALDO, num_cliente, saldo, "Consulta exitosa");
+        }
+        else
+        {
+            enviar_mensaje(id_cola_mensajes, msg.int_rte, MSG_BANCO, EVT_RTA_SALDO_NOK, -1, -1, "El cliente solicitado no existe");
+        }
+        break;
+    case EVT_DEPOSITO:
+        printf("Pedido de deposito\n");
+        if (num_cliente >= 0 && num_cliente < 100)
+        {
+            (*cli)[num_cliente].saldo = (*cli)[num_cliente].saldo + msg.monto;
+            saldo = (*cli)[num_cliente].saldo;
+            enviar_mensaje(id_cola_mensajes, msg.int_rte, MSG_BANCO, EVT_RTA_DEPOSITO, num_cliente, saldo, "Deposito exitoso");
+        }
+        else
+        {
+            enviar_mensaje(id_cola_mensajes, msg.int_rte, MSG_BANCO, EVT_RTA_DEPOSITO_NOK, -1, -1, "El cliente solicitado no existe");
+        }
 
-			enviar_mensaje(id_cola_mensajes , msg.int_rte, MSG_BANCO, EVT_RTA_SALDO, cadena);
-		break;
+        break;
+    case EVT_EXTRACCION:
+        printf("Pedido de extraccion\n");
+        if (num_cliente >= 0 && num_cliente < 100)
+        {
 
-		case EVT_DEPOSITO:
-			break;
-		
-        case EVT_EXTRACCION:
-            break;
-
-		break;
-	}
-	printf("------------------------------\n");
+            if ((*cli)[num_cliente].saldo < msg.monto)
+            {
+                enviar_mensaje(id_cola_mensajes, msg.int_rte, MSG_BANCO, EVT_RTA_EXTRACCION_NOK, -1, -1, "El saldo de la cuenta es insuficiente");
+            }
+            else
+            {
+                (*cli)[num_cliente].saldo = (*cli)[num_cliente].saldo - msg.monto;
+                saldo = (*cli)[num_cliente].saldo;
+                enviar_mensaje(id_cola_mensajes, msg.int_rte, MSG_BANCO, EVT_RTA_DEPOSITO, num_cliente, saldo, "Extraccion exitosa");
+            }
+        }
+        else
+        {
+            enviar_mensaje(id_cola_mensajes, msg.int_rte, MSG_BANCO, EVT_RTA_EXTRACCION_NOK, -1, -1, "El cliente solicitado no existe");
+        }
+        break;
+    default:
+        printf("\nEvento sin definir\n");
+        break;
+    }
+    printf("------------------------------\n");
 }
 
 int main(int arg, char *argv[])
-{   
-	//memoria, semaforos y mensajes
+{
     int id_cola_mensajes;
-	int id_memoria;	
-	int id_semaforo;
-    dato *memoria = NULL;
-	//generales
-	int saldo_aleatorio = 0;
-	int i = 0;
-
+    int id_semaforo;
+    int i;
     mensaje msg;
-	memoria = (dato*)creo_memoria(sizeof(dato)*CANTIDAD, &id_memoria, CLAVE_BASE);
+    cliente cli[100];
 
-    printf("Inicializando 100 clientes \n");
-    for (i = 0; i < 101; i++)
+    id_cola_mensajes = creo_id_cola_mensajes(CLAVE_BASE);
+    id_semaforo = creo_semaforo();
+
+    inicia_semaforo(id_semaforo, VERDE);
+
+    for (i = 0; i < 100; i++)
     {
-        memoria[i].codigo_cliente = 0;
-        memoria[i].saldo = 0;
+        cli[i].numero_cliente = i + 1;
+        cli[i].saldo = rand() % (5000 - 100) + 100;
     }
 
-    printf("Rellenando 100 clientes \n");
-    for (i = 0; i < 101; i++)
+    while (1)
     {
-        saldo_aleatorio = rand()%(100-5000);
-        memoria[i].codigo_cliente = i;
-        memoria[i].saldo = saldo_aleatorio;
-    }
-
-    recibir_mensaje(id_cola_mensajes, MSG_BANCO, &msg);
-
+        recibir_mensaje(id_cola_mensajes, MSG_BANCO, &msg);
+        procesar_evento(id_cola_mensajes, msg, &cli);
+    };
     return 0;
 }

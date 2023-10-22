@@ -4,11 +4,8 @@
 #include "global.h"
 
 int creo_id_cola_mensajes(int);
-
-int enviar_mensaje(int, long, int, int, char *);
-
-int recibir_mensaje(int, long, mensaje*);
-
+int recibir_mensaje(int, long, mensaje *);
+int enviar_mensaje(int, long, int, int, int, int, char *);
 int borrar_mensajes(int);
 
 #endif

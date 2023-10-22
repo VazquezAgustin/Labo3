@@ -1,56 +1,96 @@
-#include <sys/shm.h>
+#include <definiciones.h>
+#include <global.h>
+#include <colamensaje.h>
+#include <semaforo.h>
 #include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/ipc.h>
-#include "memoria.h"
-#include "semaforo.h"
-#include <time.h>
-#include "gestionarch.h"
-#include "global.h"
-#include "colamensaje.h"
-#include <string.h>
 
-int main(int arg, char *argv[])
+#define INTERVALO_PEDIDOS 100
+
+void procesar_evento(int id_cola_mensajes, mensaje msg)
 {
-    //memoria, semaforos y mensajes
-	int id_memoria;	
-	int id_semaforo;
-    dato *memoria = NULL;
-    int id_cola_mensajes;
-	mensaje msg;
-    //generales
-    int menu_deseado = 0;
-    char nro_cliente[4];
-    char input_mensaje[20];
-
-    id_semaforo = creo_semaforo();
-    srand(time(NULL));
-    id_cola_mensajes = creo_id_cola_mensajes(CLAVE_BASE);
-    
-    printf("Ingrese menu deseado (1 para consultar saldo / 2 depositos / 3 para extracciones) \n");
-    scanf("%d", &menu_deseado);
-
-    switch (menu_deseado)
+    switch (msg.int_evento)
     {
-    case 1:
-        printf("Ingrese numero de cliente \n");
-        scanf("%c", &nro_cliente);
+    case EVT_RTA_SALDO:
+        printf("Saldo de la cuenta: %d\n", msg.monto);
+        break;
+    case EVT_RTA_SALDO_NOK:
+        printf("No se pudo realizar la consulta\n");
+        printf("ERROR: %s\n", msg.char_mensaje);
+        break;
+    case EVT_RTA_DEPOSITO:
+        printf("Nuevo saldo: %d\n", msg.monto);
+        break;
+    case EVT_RTA_DEPOSITO_NOK:
+        printf("Hubo un error al realizar el deposito\n");
+        printf("ERROR: %s\n", msg.char_mensaje);
+        break;
+    case EVT_RTA_EXTRACCION:
+        printf("Saldo restante: %d\n", msg.monto);
+        break;
+    case EVT_RTA_EXTRACCION_NOK:
+        printf("Hubo un error al realizar la extraccion\n");
+        printf("ERROR: %s\n", msg.char_mensaje);
+        break;
 
-        // nrocliente, saldo
-        strcpy(input_mensaje, strcat(nro_cliente, ",0"));
-        
-        enviar_mensaje(id_cola_mensajes , MSG_BANCO, MSG_CAJERO_01, EVT_CONSULTA_SALDO, input_mensaje);
-        
-        break;
-    
-    case 2:
-        break;
-    case 3:
-        break;
     default:
+        printf("\nEvento sin definir\n");
         break;
     }
+    printf("------------------------------\n");
+}
+int main(int arg, char *argv[])
+{
+    int id_cola_mensajes;
+    int id_semaforo;
+    int seleccion;
+    int nro_cuenta;
+    int monto;
 
+    mensaje msg;
+    id_cola_mensajes = creo_id_cola_mensajes(CLAVE_BASE);
+    id_semaforo = creo_semaforo();
+    while (1)
+    {
+        printf("Ingrese: \n1. Consulta\n2. Deposito\n3. Extraccion\n0. Salir\n");
+        scanf("%d", &seleccion);
+        while (seleccion != 1 && seleccion != 2 && seleccion != 3 && seleccion != 0)
+        {
+            printf("ERROR\n");
+            printf("Ingrese: \n1. Consulta\n2. Deposito\n3. Extraccion\n0. Salir\n");
+            scanf("%d", &seleccion);
+        }
+        if (seleccion != 0)
+        {
+            printf("Ingrese numero de cuenta: ");
+            scanf("%d", &nro_cuenta);
+        }
+        espera_semaforo(id_semaforo);
+
+        switch (seleccion)
+        {
+        case 1:
+            enviar_mensaje(id_cola_mensajes, MSG_BANCO, MSG_CAJERO, EVT_CONSULTA_SALDO, nro_cuenta, -1, "Consulta de saldo");
+            break;
+        case 2:
+            printf("Ingrese monto a depositar: ");
+            scanf("%d", &monto);
+            enviar_mensaje(id_cola_mensajes, MSG_BANCO, MSG_CAJERO, EVT_DEPOSITO, nro_cuenta, monto, "Solicito hacer un deposito");
+            break;
+        case 3:
+            printf("Ingrese monto a extraer: ");
+            scanf("%d", &monto);
+            enviar_mensaje(id_cola_mensajes, MSG_BANCO, MSG_CAJERO, EVT_EXTRACCION, nro_cuenta, monto, "Solicito hacer una extraccion");
+            break;
+        case 0:
+            levanta_semaforo(id_semaforo);
+            return 0;
+        }
+
+        recibir_mensaje(id_cola_mensajes, MSG_CAJERO, &msg);
+        procesar_evento(id_cola_mensajes, msg);
+        levanta_semaforo(id_semaforo);
+
+        usleep(INTERVALO_PEDIDOS * 1000);
+    };
     return 0;
 }
