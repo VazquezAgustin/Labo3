@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <clave.h>
 
-key_t creo_clave()
+key_t creo_clave(int r_clave)
 {
     key_t clave;
 

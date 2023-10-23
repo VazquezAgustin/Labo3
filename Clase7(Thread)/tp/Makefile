@@ -6,7 +6,7 @@ LIBRARIES = clave.c semaforo.c gestionarch.c memoria.c colamensaje.c funcionesth
 
 HEADERS = -I./
 
-all: clean main1 main2
+all: clean main1
 
 main1:
 	$(CC) -o main main.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
