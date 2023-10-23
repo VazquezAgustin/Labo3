@@ -9,6 +9,7 @@
 #include <sys/msg.h>
 #include <time.h>
 #include <string.h>
+#include <pthread.h> 
 
 #define LARGO_TMENSAJE 1024
 typedef struct tipo_mensajes mensaje;
@@ -22,11 +23,15 @@ struct tipo_mensajes
     char char_mensaje[LARGO_TMENSAJE]; // mensaje
 };
 
-typedef struct clientes cliente;
-struct clientes
-{
-    int numero_cliente;
-    int saldo;
+// Variable global para semaforo(Mutex)
+pthread_mutex_t mutex;
+
+struct thread_data{
+   int  numero_aleatorio;
+   int  alguien_acerto;
+   int  cantidad_threads;
 };
+
+struct thread_data thread_data_info;
 
 #endif
