@@ -1,15 +1,13 @@
 #include <semaforo.h>
 #include <global.h>
-#include <colamensaje.h>
 #include <definiciones.h>
 #include <funcionesthreads.h>
 #include <pthread.h>
 
-
 int main(int arg, char *argv[])
 {
     // hilos, semaforos, colas, etc
-    pthread_t idHilo;
+    pthread_t *idHilo;
     pthread_attr_t atributos;
     int i;
     char valorDevuelto;
@@ -28,6 +26,7 @@ int main(int arg, char *argv[])
     // genero nro al azar
     srand(time(NULL));
     numero_aleatorio = (rand() % 99) + 1;
+    idHilo = (pthread_t* ) malloc(sizeof(pthread_t)*cantidad_jugadores);
 
     // hilos
     pthread_mutex_init(&mutex, NULL);
@@ -36,29 +35,20 @@ int main(int arg, char *argv[])
 
     thread_data_info.numero_aleatorio = numero_aleatorio;
     thread_data_info.alguien_acerto = alguien_acerto;
-    thread_data_info.cantidad_threads = cantidad_jugadores;
-
-    if (pthread_create(&idHilo, &atributos, funcionThread, &thread_data_info) != 0) {
-        perror("No puedo crear thread");
-        exit(-1);
-    } // Mientras se ejecutan los hilos continua ejecutandose el main.
 
     for (i = 0; i < cantidad_jugadores; i++)
     {
-        pthread_mutex_lock(&mutex);
-        printf("Soy el padre y tengo el mutex\n");
-        sleep(1);
-        pthread_mutex_unlock(&mutex);
-        sleep(1);
+        if (pthread_create(&idHilo[i], &atributos, funcionThread, &thread_data_info) != 0) {
+            perror("No puedo crear thread");
+            exit(-1);
+        } // Mientras se ejecutan los hilos continua ejecutandose el main.
     }
     printf("Padre : Espero al thread\n");
-    // pthread_join es una funcion bloqueante que evita que
-    // finalice el main(). Se desbloquea cuando van finalizando
-    // los hilos. Le paso el idHilo que tiene que esperar.
-    // Cada idHilo es unico para cada hilo.
-    pthread_join(idHilo, (void **)&valorDevuelto);
+    pthread_join(*idHilo, (void **)&valorDevuelto);
     printf("Padre : Ya ha terminado el thread\n");
     printf("Padre : devuelve %c\n", valorDevuelto);
+
+    free(idHilo);
 
     return 0;
 }
