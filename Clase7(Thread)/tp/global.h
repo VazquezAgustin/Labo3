@@ -34,4 +34,12 @@ struct thread_data{
 
 struct thread_data thread_data_info;
 
+#define CANTIDAD_VIAS 3
+
+typedef struct Via dato;
+struct Via{
+    int vehiculos_en_cola;
+};
+
+
 #endif
