@@ -1,5 +1,5 @@
-#ifndef _FUNCIONES_H
-#define _FUNCIONES_H
+#ifndef _GLOBAL
+#define _GLOBAL
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,6 +9,8 @@
 #include <sys/msg.h>
 #include <time.h>
 #include <string.h>
+#include <pthread.h> 
+
 
 #define LARGO_TMENSAJE 1024
 typedef struct tipo_mensajes mensaje;
@@ -28,5 +30,9 @@ struct clientes
     int numero_cliente;
     int saldo;
 };
+
+// Variable global para semaforo(Mutex)
+pthread_mutex_t mutex;
+
 
 #endif
