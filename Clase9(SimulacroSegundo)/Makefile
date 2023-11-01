@@ -2,13 +2,13 @@ CC = gcc
 
 CFLAGS = -Wall -std=gnu89 -O3 -pedantic-errors
 
-LIBRARIES = clave.c semaforo.c gestionarch.c memoria.c colamensaje.c funcionthreads.c
+LIBRARIES = clave.c semaforo.c gestionarch.c memoria.c colamensaje.c funcionmain1.c
 
 HEADERS = -I./
 
 all: clean main
 
-main:
+main1:
 	$(CC) -o main main.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
 
 # main2:
