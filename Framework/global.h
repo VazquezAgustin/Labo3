@@ -11,7 +11,6 @@
 #include <string.h>
 #include <pthread.h> 
 
-
 #define LARGO_TMENSAJE 1024
 typedef struct tipo_mensajes mensaje;
 struct tipo_mensajes
@@ -19,8 +18,7 @@ struct tipo_mensajes
     long long_dest;                    // Destinatario
     int int_rte;                       // Remitente
     int int_evento;                    // Numero de evento
-    int nro_cuenta;                    // numero de cuenta
-    int monto;                         // monto en la cuenta
+    int insumo;                        // numero de cuenta
     char char_mensaje[LARGO_TMENSAJE]; // mensaje
 };
 
@@ -33,6 +31,5 @@ struct clientes
 
 // Variable global para semaforo(Mutex)
 pthread_mutex_t mutex;
-
 
 #endif

@@ -5,6 +5,7 @@
         "string.h": "c",
         "semaforo.h": "c",
         "clave.h": "c",
-        "funcionesthreads.h": "c"
+        "funcionesthreads.h": "c",
+        "colamensaje.h": "c"
     }
 }

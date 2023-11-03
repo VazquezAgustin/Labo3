@@ -7,6 +7,7 @@
 #include <sys/msg.h>
 #include <time.h>
 #include <string.h>
+#include <pthread.h> 
 
 #define LARGO_TMENSAJE 1024
 typedef struct tipo_mensajes mensaje;
@@ -33,3 +34,6 @@ typedef struct Via dato;
 struct Via{
     int vehiculos_en_cola;
 };
+
+// Variable global para semaforo(Mutex)
+pthread_mutex_t mutex;

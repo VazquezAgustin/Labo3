@@ -42,6 +42,8 @@ int main(int arg, char *argv[])
     thread_data_info.numero_aleatorio = numero_aleatorio;
     thread_data_info.alguien_acerto = alguien_acerto;
 
+    
+
     //Inicializar estructura
     for (via = 0; via < CANTIDAD_VIAS; via++)
     {
