@@ -25,6 +25,7 @@ void *funcionThread(void *threadarg)
 
 
     pthread_mutex_lock(&mutex);
+        printf("Thread %d realizando tiro \n", idThread);
         usleep(500 * 1000);
         enviar_mensaje(id_cola_mensajes, MSG_ARQUERO, idThread, EVT_TIRO);
     pthread_mutex_unlock(&mutex);
@@ -32,6 +33,8 @@ void *funcionThread(void *threadarg)
     // logica
     while (termino == 0)
     {
+        usleep(500 * 1000);
+        printf("Thread %d Recibiendo resultado de tiro \n", idThread);
         mensaje_recibido = recibir_mensaje(id_cola_mensajes, idThread, &msg);
         if (mensaje_recibido > 0){
             pthread_mutex_lock(&mutex);
@@ -43,13 +46,13 @@ void *funcionThread(void *threadarg)
                     break;
                 
                 default:
-                    printf("UFFFFFFF");
+                    printf("UFFFFFFF \n");
                     break;
                 }
         }
+        pthread_mutex_unlock(&mutex);
     }
     datos_thread->output_evento = msg.int_evento;
-    pthread_mutex_unlock(&mutex);
 
     pthread_exit ((void*)0);
 }
