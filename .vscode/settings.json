@@ -7,5 +7,6 @@
         "clave.h": "c",
         "funcionesthreads.h": "c",
         "colamensaje.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

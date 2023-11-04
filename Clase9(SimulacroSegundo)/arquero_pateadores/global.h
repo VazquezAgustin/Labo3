@@ -14,6 +14,9 @@
 #define LARGO_TMENSAJE 1024
 
 // Variables de ejercicio
+
+#define CANTIDAD_PATEADORES 5
+
 typedef struct cant_insumos insumos;
 struct cant_insumos
 {
@@ -21,12 +24,11 @@ struct cant_insumos
     int cant_de_insumo;
 };
 
-struct thread_data{
-   int  nro_hormiga;
-   int  id_cola_mensajes;
-};
-
-struct thread_data thread_data_info;
+typedef struct tipo_datosThread{
+    int idThread;
+    int id_cola_mensajes;
+    int output_evento;
+}datosThread;
 
 // Variable global para semaforo(Mutex)
 pthread_mutex_t mutex;
@@ -38,7 +40,6 @@ struct tipo_mensajes
     long long_dest;                    // Destinatario
     int int_rte;                       // Remitente
     int int_evento;                    // Numero de evento
-    int cantidad_insumo;               // Cantidad Insumos Hormiga
 };
 
 struct tipo_datos

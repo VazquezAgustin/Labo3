@@ -9,6 +9,7 @@
 #include <gestionarch.h>
 #include <global.h>
 #include <colamensaje.h>
+#include <funcionthreads.h>
 
 int main(int arg, char *argv[])
 {   

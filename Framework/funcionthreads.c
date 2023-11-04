@@ -5,21 +5,22 @@
 #include <pthread.h>
 #include <global.h>
 #include <unistd.h>
+#include <colamensaje.h>
 
-void *funcionPeaje(void *threadarg){
+void *funcionThread(void *threadarg){
 
-    struct thread_data *my_data;
-    my_data = (struct thread_data *) threadarg;
+    // struct thread_data *my_data;
+    // my_data = (struct thread_data *) threadarg;
 
-    while(1){
+    // while(1){
 
-        printf("Peaje numero \n");
+    //     printf("Peaje numero \n");
 
-        sleep(1);
-        pthread_mutex_unlock(&mutex);
-        sleep(1);
+    //     sleep(1);
+    //     pthread_mutex_unlock(&mutex);
+    //     sleep(1);
 
-    }
-    printf("Hijo : Termino\n");
+    // }
+    // printf("Hijo : Termino\n");
     return 0;
 }

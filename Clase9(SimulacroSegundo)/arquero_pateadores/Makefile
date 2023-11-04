@@ -6,13 +6,13 @@ LIBRARIES = clave.c semaforo.c gestionarch.c memoria.c colamensaje.c funcionthre
 
 HEADERS = -I./
 
-all: clean main
+all: clean main main2
 
 main:
-	$(CC) -o main main.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
+	$(CC) -o 1arquero 1arquero.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
 
-# main2:
-# 	$(CC) -o cajero cajero.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
+main2:
+	$(CC) -o 2pateadores 2pateadores.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
 
 clean: 
-	rm -rf *o main *.dat
+	rm -rf *o 1arquero 2pateadores *.dat

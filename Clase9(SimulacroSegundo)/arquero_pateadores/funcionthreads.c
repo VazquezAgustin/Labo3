@@ -5,21 +5,51 @@
 #include <pthread.h>
 #include <global.h>
 #include <unistd.h>
+#include <colamensaje.h>
 
-void *funcionPeaje(void *threadarg){
+void *funcionThread(void *threadarg)
+{
 
-    struct thread_data *my_data;
-    my_data = (struct thread_data *) threadarg;
+    // memoria y semaforo
+    int id_cola_mensajes;
+    mensaje msg;
+    int idThread = 0;
+    datosThread *datos_thread = (datosThread*) threadarg;
+    //comunes
+    int mensaje_recibido = 0;
+    int termino = 0;
 
-    while(1){
+    // paso en limpio inputs
+    idThread = datos_thread->idThread;
+    id_cola_mensajes = datos_thread->id_cola_mensajes;
 
-        printf("Peaje numero \n");
 
-        sleep(1);
-        pthread_mutex_unlock(&mutex);
-        sleep(1);
+    pthread_mutex_lock(&mutex);
+        usleep(500 * 1000);
+        enviar_mensaje(id_cola_mensajes, MSG_ARQUERO, idThread, EVT_TIRO);
+    pthread_mutex_unlock(&mutex);
 
+    // logica
+    while (termino == 0)
+    {
+        mensaje_recibido = recibir_mensaje(id_cola_mensajes, idThread, &msg);
+        if (mensaje_recibido > 0){
+            pthread_mutex_lock(&mutex);
+                
+                switch (msg.int_evento)
+                {
+                case EVT_GOL:
+                    printf("GOOOOL \n");
+                    break;
+                
+                default:
+                    printf("UFFFFFFF");
+                    break;
+                }
+        }
     }
-    printf("Hijo : Termino\n");
-    return 0;
+    datos_thread->output_evento = msg.int_evento;
+    pthread_mutex_unlock(&mutex);
+
+    pthread_exit ((void*)0);
 }
