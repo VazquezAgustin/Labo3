@@ -35,7 +35,7 @@ int main(int arg, char *argv[])
         datos_thread[index_creacion_threads].idThread = MSG_PATEADOR + index_creacion_threads;
         datos_thread[index_creacion_threads].id_cola_mensajes = id_cola_mensajes;
         datos_thread[index_creacion_threads].output_evento = 0;
-        printf("\nidHormiga: %d\tid_cola_mensajes: %d", datos_thread[index_creacion_threads].idThread, datos_thread[index_creacion_threads].id_cola_mensajes);
+        printf("idHormiga: %d\tid_cola_mensajes: %d \n", datos_thread[index_creacion_threads].idThread, datos_thread[index_creacion_threads].id_cola_mensajes);
         pthread_create(&idThread[index_creacion_threads], &atributos, funcionThread, &datos_thread[index_creacion_threads]);
     }
 

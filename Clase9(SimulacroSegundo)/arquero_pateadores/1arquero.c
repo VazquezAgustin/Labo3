@@ -29,7 +29,8 @@ int main(int arg, char *argv[])
     borrar_mensajes(id_cola_mensajes);
 
     while (cantidad_tiros <= 5){
-        recibir_mensaje(id_cola_mensajes, MSG_ARQUERO, &msg);
+        printf("esperando tiro \n");
+        recibir_mensaje(id_cola_mensajes, MSG_ARQUERO, &msg, 0);
 
         numeroAleatorio = (rand() % 4) + 2;
         usleep(500 * 1000);
