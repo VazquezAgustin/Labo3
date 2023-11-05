@@ -26,7 +26,7 @@ void *funcionThread(void *threadarg)
 
     pthread_mutex_lock(&mutex);
         printf("Thread %d realizando tiro \n", idThread);
-        usleep(500 * 1000);
+        usleep(2000 * 1000);
         enviar_mensaje(id_cola_mensajes, MSG_ARQUERO, idThread, EVT_TIRO);
     pthread_mutex_unlock(&mutex);
 
@@ -42,11 +42,11 @@ void *funcionThread(void *threadarg)
                 switch (msg.int_evento)
                 {
                 case EVT_GOL:
-                    printf("GOOOOL \n");
+                    printf("thread %d : GOOOOL \n", idThread);
                     break;
                 
                 default:
-                    printf("UFFFFFFF \n");
+                    printf("thread %d UFFFFFFF \n", idThread);
                     break;
                 }
                 termino = 1;
