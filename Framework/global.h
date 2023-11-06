@@ -22,6 +22,12 @@ struct tipo_mensajes
     int int_evento;                    // Numero de evento
 };
 
+typedef struct tipo_datosThread{
+    int idThread;
+    int id_cola_mensajes;
+    int output_evento;
+}datosThread;
+
 struct tipo_datos
 {
     int dato;

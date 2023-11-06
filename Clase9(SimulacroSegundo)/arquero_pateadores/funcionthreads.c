@@ -50,8 +50,8 @@ void *funcionThread(void *threadarg)
                     break;
                 }
                 termino = 1;
+            pthread_mutex_unlock(&mutex);
         }
-        pthread_mutex_unlock(&mutex);
     }
     printf("Thread %d termino \n", idThread);
     datos_thread->output_evento = msg.int_evento;

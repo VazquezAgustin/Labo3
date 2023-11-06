@@ -9,7 +9,7 @@ HEADERS = -I./
 all: clean main
 
 main:
-	$(CC) -o main main.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
+	$(CC) -o 1_reina 1_reina.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
 
 # main2:
 # 	$(CC) -o cajero cajero.c $(LIBRARIES) $(CFLAGS) $(HEADERS)

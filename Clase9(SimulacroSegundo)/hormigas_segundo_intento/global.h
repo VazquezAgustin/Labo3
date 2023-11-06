@@ -10,6 +10,7 @@
 #include <time.h>
 #include <string.h>
 #include <pthread.h> 
+#include <global.h>
 
 #define LARGO_TMENSAJE 1024
 
@@ -18,12 +19,21 @@ struct tipo_mensajes
 {
     long long_dest;                    // Destinatario
     int int_rte;                       // Remitente
-    int int_evento;                    // Numero de evento
+    int tipo_insumo;                    // Numero de evento
+    int cantidad;
 };
 
-struct tipo_datos
+typedef struct tipo_datosThread{
+    int idThread;
+    int id_cola_mensajes;
+    int output_evento;
+}datosThread;
+
+
+struct tipo_insumos
 {
-    int dato;
+    char insumo[50];
+    int stock;
 };
 
 typedef enum
