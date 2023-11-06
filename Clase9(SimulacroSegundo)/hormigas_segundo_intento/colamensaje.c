@@ -23,7 +23,7 @@ int enviar_mensaje(int id_cola_mensajes, long rLongDest, int rIntRte, int rIntEv
     // strcpy(msg.char_mensaje, rpCharMsg);
     return msgsnd(id_cola_mensajes, (struct msgbuf *)&msg, sizeof(msg.int_rte) + sizeof(msg.int_evento) /*+ sizeof(msg.nro_cuenta) + sizeof(msg.monto) + sizeof(msg.char_mensaje)*/, IPC_NOWAIT);
 }
-int recibir_mensaje(int id_cola_mensajes, long rLongDest, mensaje *rMsg, int bloqueante)
+int recibir_mensaje(int id_cola_mensajes, long rLongDest, mensaje *rMsg, int bloqueante = 0)
 {
     mensaje msg;
     int res;

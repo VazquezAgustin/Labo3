@@ -13,7 +13,6 @@
 
 #define LARGO_TMENSAJE 1024
 
-// Variables de cola de mensaje
 typedef struct tipo_mensajes mensaje;
 struct tipo_mensajes
 {
@@ -30,18 +29,18 @@ struct tipo_datos
 typedef enum
 {
     MSG_NADIE, //0
-    MSG_ARQUERO, //1
-    MSG_PATEADOR // 2 Cada hilo le suma uno a este define.
+    MSG_REINA, //1
+    MSG_HORMIGA // 2 Cada hilo le suma uno a este define.
 } Destinos;
 
-typedef enum{
-    EVT_NINGUNO, //0
-    EVT_TIRO, //1
-    EVT_GOL, //2
-    EVT_PALO, //3
-    EVT_TRAVESAÑO, //4
-    EVT_FUERA //5
-} Eventos;
+// typedef enum{
+//     EVT_NINGUNO, //0
+//     EVT_TIRO, //1
+//     EVT_GOL, //2
+//     EVT_PALO, //3
+//     EVT_TRAVESAÑO, //4
+//     EVT_FUERA //5
+// } Eventos;
 
 // Variable global para semaforo(Mutex)
 pthread_mutex_t mutex;

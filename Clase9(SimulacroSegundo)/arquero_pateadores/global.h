@@ -17,13 +17,6 @@
 
 #define CANTIDAD_PATEADORES 5
 
-typedef struct cant_insumos insumos;
-struct cant_insumos
-{
-    char tipo_insumo[20];
-    int cant_de_insumo;
-};
-
 typedef struct tipo_datosThread{
     int idThread;
     int id_cola_mensajes;
