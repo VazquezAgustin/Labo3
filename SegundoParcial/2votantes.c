@@ -14,6 +14,8 @@
 int main(int arg, char *argv[])
 {   
     // memoria y semaforo
+    int id_memoria;
+    dato_flag *memoria = NULL;
     int id_cola_mensajes;
     pthread_t *idThread = NULL;
     pthread_attr_t atributos;
@@ -23,6 +25,7 @@ int main(int arg, char *argv[])
 
     pthread_mutex_init(&mutex, NULL);
 
+    memoria = (dato_flag*)creo_memoria(sizeof(dato_flag), &id_memoria, CLAVE_BASE);
     idThread = (pthread_t *)malloc(sizeof(pthread_t)*CANTIDAD_VOTANTES); //primero 1 thread, dsp pruebo varios
     pthread_attr_init(&atributos); 
     pthread_attr_setdetachstate(&atributos, PTHREAD_CREATE_JOINABLE);
@@ -41,6 +44,8 @@ int main(int arg, char *argv[])
     for (index_creacion_threads=0; index_creacion_threads<CANTIDAD_VOTANTES; index_creacion_threads++){
         pthread_join (idThread[index_creacion_threads], NULL);
     }
+
+    memoria->terminar = 1;
 
     free(idThread);
     borrar_mensajes(id_cola_mensajes);

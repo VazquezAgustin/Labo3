@@ -14,6 +14,13 @@
 #define LARGO_TMENSAJE 1024
 #define CANTIDAD_VOTANTES 2
 
+// Variables memoria compartida
+typedef struct Flag dato_flag;
+struct Flag{
+    int terminar;
+};
+
+
 // Variables de ejercicio
 typedef struct struct_votos votos;
 struct struct_votos
@@ -49,8 +56,7 @@ typedef enum{
     EVT_NINGUNO, //0
     EV_INIT, //1
     EV_PRESIDENTE, //2
-    EV_VICE, //3
-    EV_FIN
+    EV_VICE //3
 } Eventos;
 
 // Variable global para semaforo(Mutex)

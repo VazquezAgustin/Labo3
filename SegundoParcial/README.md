@@ -16,3 +16,7 @@ VOTANTES ingresas votos
 PANEL muestra lo que ingresaste por votantes
 
 # Como ejecutar
+
+make
+./1panel
+./2votantes

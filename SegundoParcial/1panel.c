@@ -14,6 +14,8 @@
 int main(int arg, char *argv[])
 {   
     // memoria y semaforo
+    int id_memoria;
+    dato_flag *memoria = NULL;
     int id_cola_mensajes;
     mensaje msg;
     //comunes
@@ -24,10 +26,13 @@ int main(int arg, char *argv[])
     int index_inicializar_cantidad = 0;
 
     // inicializaciones
+    memoria = (dato_flag*)creo_memoria(sizeof(dato_flag), &id_memoria, CLAVE_BASE);
     id_cola_mensajes = creo_id_cola_mensajes(CLAVE_BASE);
     srand(time(NULL));
     borrar_mensajes(id_cola_mensajes);
     pthread_mutex_init(&mutex, NULL);
+
+    memoria->terminar = 0;
 
     strcpy(array_votos_presidenciales[0].nombre, "MS"); //PRESIDENTE
     strcpy(array_votos_presidenciales[1].nombre, "MI"); //PRESIDENTE
@@ -58,7 +63,7 @@ int main(int arg, char *argv[])
         pthread_mutex_unlock(&mutex);
     }
 
-    while (msg.int_evento != EV_FIN)
+    while (memoria->terminar == 0)
     {
         recibir_mensaje(id_cola_mensajes, MSG_PANEL, &msg, 0);
 
@@ -88,6 +93,9 @@ int main(int arg, char *argv[])
             break;
         }
     }
+
+    shmdt ((char *)memoria);
+	shmctl (id_memoria, IPC_RMID, (struct shmid_ds *)NULL);
     
     return 0;
 }

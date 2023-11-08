@@ -46,17 +46,17 @@ void *funcionThread(void *threadarg){
             usleep(200 * 1000);
             enviar_mensaje(id_cola_mensajes, MSG_PANEL, idThread, EV_PRESIDENTE, voto);
         pthread_mutex_unlock(&mutex);
+        usleep(600 * 1000);
     }
 
     for (index_vueltas = 0; index_vueltas < cantidad_vueltas; index_vueltas++)
     {
         pthread_mutex_lock(&mutex);
             voto = rand() % 2;
-            printf("Votante %d votando presidente %d \n", idThread, voto);
-            usleep(200 * 1000);
+            printf("Votante %d votando vicepresidente %d \n", idThread, voto);
             enviar_mensaje(id_cola_mensajes, MSG_PANEL, idThread, EV_VICE, voto);
         pthread_mutex_unlock(&mutex);
-        usleep(300 * 1000);
+        usleep(600 * 1000);
     }
 
     printf("Thread %d termino \n", idThread);
