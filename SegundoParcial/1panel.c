@@ -30,14 +30,18 @@ int main(int arg, char *argv[])
     id_cola_mensajes = creo_id_cola_mensajes(CLAVE_BASE);
     srand(time(NULL));
     borrar_mensajes(id_cola_mensajes);
-    pthread_mutex_init(&mutex, NULL);
 
     memoria->terminar = 0;
 
+    // falta asignar con memset
+    memset(array_votos_presidenciales[0].nombre, 0x00, sizeof(array_votos_presidenciales[0].nombre));
     strcpy(array_votos_presidenciales[0].nombre, "MS"); //PRESIDENTE
+    memset(array_votos_presidenciales[1].nombre, 0x00, sizeof(array_votos_presidenciales[1].nombre));
     strcpy(array_votos_presidenciales[1].nombre, "MI"); //PRESIDENTE
 
+    memset(array_votos_vice[0].nombre, 0x00, sizeof(array_votos_vice[0].nombre));
     strcpy(array_votos_vice[0].nombre, "A"); //VICE
+    memset(array_votos_vice[1].nombre, 0x00, sizeof(array_votos_vice[1].nombre));
     strcpy(array_votos_vice[1].nombre, "V"); //VICE
 
     for (index_inicializar_cantidad = 0; index_inicializar_cantidad < 2; index_inicializar_cantidad++)
@@ -52,7 +56,6 @@ int main(int arg, char *argv[])
 
     for (index_iniciar_threads = 0; index_iniciar_threads < CANTIDAD_VOTANTES; index_iniciar_threads++)
     {
-        pthread_mutex_lock(&mutex);
             usleep(500 * 1000);
             msg.int_evento = EV_INIT;
             msg.long_dest = MSG_VOTANTE + index_iniciar_threads;
@@ -60,7 +63,6 @@ int main(int arg, char *argv[])
             msg.voto_a_candidato = 0;
             enviar_mensaje(id_cola_mensajes, msg.long_dest, msg.int_rte, msg.int_evento, msg.voto_a_candidato);
             printf("Mensaje inicio votaciones thread %d enviado\n", index_iniciar_threads);
-        pthread_mutex_unlock(&mutex);
     }
 
     while (memoria->terminar == 0)

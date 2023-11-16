@@ -26,7 +26,7 @@ int main(int arg, char *argv[])
     pthread_mutex_init(&mutex, NULL);
 
     memoria = (dato_flag*)creo_memoria(sizeof(dato_flag), &id_memoria, CLAVE_BASE);
-    idThread = (pthread_t *)malloc(sizeof(pthread_t)*CANTIDAD_VOTANTES); //primero 1 thread, dsp pruebo varios
+    idThread = (pthread_t *)malloc(sizeof(pthread_t)*CANTIDAD_VOTANTES);
     pthread_attr_init(&atributos); 
     pthread_attr_setdetachstate(&atributos, PTHREAD_CREATE_JOINABLE);
     id_cola_mensajes = creo_id_cola_mensajes(CLAVE_BASE);
