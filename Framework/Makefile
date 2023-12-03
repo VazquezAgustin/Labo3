@@ -6,7 +6,7 @@ LIBRARIES = clave.c semaforo.c gestionarch.c memoria.c colamensaje.c funcionthre
 
 HEADERS = -I./
 
-all: clean main
+all: clean main run_script
 
 main:
 	$(CC) -o main main.c $(LIBRARIES) $(CFLAGS) $(HEADERS)
@@ -16,3 +16,6 @@ main:
 
 clean: 
 	rm -rf *o main *.dat
+
+run_script:
+	bash cleanupmemory.sh
