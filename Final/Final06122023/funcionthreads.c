@@ -53,9 +53,9 @@ void *funcionThreadNormal(void *threadarg){
         pthread_mutex_lock(&mutex_proceso_2);
             cantidad = (rand() % (maximo - minimo + 1)) + minimo;
             printf("Thread %d genero cantidad %d \n", idThread, cantidad);
-            usleep(600 * 1000);
             enviar_mensaje(id_cola_mensajes, MSG_PANEL, idThread, EVT_INFO, cantidad);
         pthread_mutex_unlock(&mutex_proceso_2);
+        usleep(600 * 1000);
     }
 
     return 0;

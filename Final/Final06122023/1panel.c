@@ -11,7 +11,7 @@
 #include <colamensaje.h>
 #include <funcionthreads.h>
 
-void procesar_evento(mensaje msg, eventos array_eventos_ocurridos[],dato_inicio *memoria_inicio_lluvia)
+void procesar_evento(mensaje msg, eventos array_eventos_ocurridos[],dato_inicio *memoria_inicio_lluvia, int id_semaforo)
 {
     // dejado en caso de necesitar debug
     // printf("Destino %d\n", (int)msg.long_dest);
@@ -25,21 +25,23 @@ void procesar_evento(mensaje msg, eventos array_eventos_ocurridos[],dato_inicio 
         {
         case MSG_RAYOS:
             printf("Rayos detectados \n");
-            array_eventos_ocurridos[0].cantidad_detectados ++;
+            array_eventos_ocurridos[0].cantidad_detectados = array_eventos_ocurridos[0].cantidad_detectados + msg.cantidad;
             break;
         
         case MSG_TRUENOS:
             printf("Truenos detectados \n");
-            array_eventos_ocurridos[1].cantidad_detectados ++;
-            if (memoria_inicio_lluvia->iniciar == 0)
-            {
-                memoria_inicio_lluvia->iniciar = 1;
-            }
+            array_eventos_ocurridos[1].cantidad_detectados = array_eventos_ocurridos[1].cantidad_detectados + msg.cantidad;
+            espera_semaforo(id_semaforo);
+                if (memoria_inicio_lluvia->iniciar == 0)
+                {
+                    memoria_inicio_lluvia->iniciar = 1;
+                }
+            levanta_semaforo(id_semaforo);
             break;
 
         case MSG_RELAMPAGOS:
             printf("Relampagos detectados \n");
-            array_eventos_ocurridos[2].cantidad_detectados ++;
+            array_eventos_ocurridos[2].cantidad_detectados = array_eventos_ocurridos[2].cantidad_detectados + msg.cantidad;
             break;
         
         case MSG_LLUVIA:
@@ -51,7 +53,7 @@ void procesar_evento(mensaje msg, eventos array_eventos_ocurridos[],dato_inicio 
             break;
         }
         break;
-        
+
     default:
         printf("\nEvento sin definir\n");
         break;
@@ -62,6 +64,8 @@ int main(int arg, char *argv[])
 {   
     int id_cola_mensajes;
     mensaje msg;
+    int id_semaforo;
+    int mensaje_recibido = 0;
     //comunes
     eventos array_eventos_ocurridos[3];
     int id_memoria_inicio = 0;
@@ -71,6 +75,8 @@ int main(int arg, char *argv[])
     int index_contador = 0;
 
     // inicializaciones
+    id_semaforo = creo_semaforo();
+    inicia_semaforo(id_semaforo, VERDE);
     memoria_inicio = (dato_inicio*)creo_memoria(sizeof(dato_inicio), &id_memoria_inicio, CLAVE_BASE);
     memoria_inicio_lluvia = (dato_inicio*)creo_memoria(sizeof(dato_inicio), &id_memoria_inicio_lluvia, CLAVE_BASE + 1000);
     id_cola_mensajes = creo_id_cola_mensajes(CLAVE_BASE + 400);
@@ -108,15 +114,18 @@ int main(int arg, char *argv[])
 
     while (memoria_inicio->iniciar == 1)
     {
-        recibir_mensaje(id_cola_mensajes, MSG_PANEL, &msg, 0);
-
-        procesar_evento(msg, array_eventos_ocurridos, memoria_inicio_lluvia);
+        mensaje_recibido = recibir_mensaje(id_cola_mensajes, MSG_PANEL, &msg, 1);
+        if (mensaje_recibido > 0)
+        {
+        procesar_evento(msg, array_eventos_ocurridos, memoria_inicio_lluvia, id_semaforo);
         
         for (index_contador = 0; index_contador < 3; index_contador++)
         {
             printf("Evento %s cantidad %d \n", array_eventos_ocurridos[index_contador].nombre_evento, array_eventos_ocurridos[index_contador].cantidad_detectados);
         }
         printf("--------------\n");
+        }
+        
     }
     
     shmdt ((char *)memoria_inicio);

@@ -14,6 +14,7 @@
 int main(int arg, char *argv[])
 {   
     int id_cola_mensajes;
+    int id_semaforo;
     pthread_t *idThread = NULL;
     pthread_attr_t atributos;
     datosThread *datos_thread = NULL;
@@ -24,8 +25,10 @@ int main(int arg, char *argv[])
     dato_inicio *memoria_inicio_lluvia = NULL;
     int index_creacion_threads = 0;
     int iniciar = 0;
+    int iniciar_lluvia = 0;
 
     // inicializaciones
+    id_semaforo = creo_semaforo();
     memoria_inicio = (dato_inicio*)creo_memoria(sizeof(dato_inicio), &id_memoria_inicio, CLAVE_BASE);
     memoria_inicio_lluvia = (dato_inicio*)creo_memoria(sizeof(dato_inicio), &id_memoria_inicio_lluvia, CLAVE_BASE + 1000);
     idThread = (pthread_t *)malloc(sizeof(pthread_t)*CANTIDAD_THREADS);
@@ -58,10 +61,20 @@ int main(int arg, char *argv[])
     }
 
     // cuando se detecta 1 trueno se activa la lluvia
-    while (memoria_inicio_lluvia->iniciar == 0)
+    while (iniciar_lluvia == 0)
     {
-        printf("Todavia no se detectaron truenos\n");
-        sleep(3);
+        espera_semaforo(id_semaforo);
+            if (memoria_inicio_lluvia->iniciar == 0)
+            {
+                printf("Todavia no se detectaron truenos\n");
+                sleep(3);
+            }else
+            {
+                iniciar_lluvia = 1;
+            }
+        levanta_semaforo(id_semaforo);
+        usleep(400 * 1000);
+        
     }
     datos_thread[3].idThread = MSG_LLUVIA;
     datos_thread[3].id_cola_mensajes = id_cola_mensajes;
@@ -71,6 +84,8 @@ int main(int arg, char *argv[])
     for (index_creacion_threads=0; index_creacion_threads<CANTIDAD_THREADS; index_creacion_threads++){
         pthread_join (idThread[index_creacion_threads], NULL);
     }
+
+    sleep(10);
     
     // avisar a proceso 1 que debe terminar
     memoria_inicio->iniciar = 0;
